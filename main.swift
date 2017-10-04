@@ -13,10 +13,10 @@ command(
 	Option("width", 1024, description: "output pixel width"),
 	Option("height", 1024, description: "output pixel height"),
 	Option("page", 1, description: "page to render"),
+	Flag("preserveaspectratio", description: "preserve the aspect ratio in the output", default: true),
 	Argument<String>("pdfin", description: "The PDF input file"),
 	Argument<String>("pngout", description: "The PNG output file")
-) { width, height, pageno, pdfin, pngout  in
-	//debugPrint(pdfin, pngout, width, height)
+) { width, height, pageno, preserveaspectratio, pdfin, pngout  in
 	let url = URL(fileURLWithPath: pdfin)
 	if let pdfdoc = CGPDFDocument(url as CFURL) {
 		let size = CGSize(width: width, height: height)
@@ -27,7 +27,7 @@ command(
 			let image = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: Int(size.width), pixelsHigh: Int(size.height), bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: cspace, bytesPerRow: 0, bitsPerPixel: 0)!
 			let destRect = CGRect(origin: CGPoint(x: 0, y: 0), size: size)
 			let pdfScale = size.width/smallPageRect.size.width
-			var drawingTransform = page.getDrawingTransform(.cropBox, rect: destRect, rotate: 0, preserveAspectRatio: true)
+			var drawingTransform = page.getDrawingTransform(.cropBox, rect: destRect, rotate: 0, preserveAspectRatio: preserveaspectratio)
 			if pdfScale > 1 {
 				drawingTransform = drawingTransform.scaledBy(x: pdfScale, y: pdfScale)
 				drawingTransform.tx = 0
