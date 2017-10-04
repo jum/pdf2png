@@ -41,9 +41,9 @@ command(
 			let outurl = URL(fileURLWithPath: pngout)
 			try data.write(to: outurl)
 		} else {
-			print("could not find page \(pageno) in \(url.absoluteString)")
+			throw ArgumentParserError("could not find page \(pageno) in \(url.absoluteString)")
 		}
 	} else {
-		print("Unable to open \(url.absoluteString)")
+		throw ArgumentParserError("Unable to open \(url.absoluteString)")
 	}
 }.run()
