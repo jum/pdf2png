@@ -16,7 +16,7 @@ command(
 	Flag("preserveaspectratio", description: "preserve the aspect ratio in the output", default: true),
 	Argument<String>("pdfin", description: "The PDF input file"),
 	Argument<String>("pngout", description: "The PNG output file")
-) { width, height, pageno, preserveaspectratio, pdfin, pngout  in
+) { (width, height, pageno, preserveaspectratio, pdfin, pngout) throws  in
 	let url = URL(fileURLWithPath: pdfin)
 	if let pdfdoc = CGPDFDocument(url as CFURL) {
 		let size = CGSize(width: width, height: height)
@@ -39,11 +39,7 @@ command(
 			cgctx.drawPDFPage(page)
 			let data = image.representation(using: NSPNGFileType, properties: [:])!
 			let outurl = URL(fileURLWithPath: pngout)
-			do {
-				try data.write(to: outurl)
-			} catch {
-				print("unable to write \(url.absoluteString): \(error)")
-			}
+			try data.write(to: outurl)
 		} else {
 			print("could not find page \(pageno) in \(url.absoluteString)")
 		}
