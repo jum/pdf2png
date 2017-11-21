@@ -37,9 +37,12 @@ command(
 			let cgctx = ctx.cgContext
 			cgctx.concatenate(drawingTransform)
 			cgctx.drawPDFPage(page)
-			let data = image.representation(using: NSPNGFileType, properties: [:])!
-			let outurl = URL(fileURLWithPath: pngout)
-			try data.write(to: outurl)
+			if let data = image.representation(using: NSPNGFileType, properties: [:]) {
+				let outurl = URL(fileURLWithPath: pngout)
+				try data.write(to: outurl)
+			} else {
+				throw ArgumentParserError("Unable to create PNG representation")
+			}
 		} else {
 			throw ArgumentParserError("could not find page \(pageno) in \(url.absoluteString)")
 		}
