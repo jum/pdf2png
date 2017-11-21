@@ -10,10 +10,10 @@ import Commander
 import AppKit
 
 command(
-	Option("width", 1024, description: "output pixel width"),
-	Option("height", 1024, description: "output pixel height"),
-	Option("page", 1, description: "page to render"),
-	Flag("preserveaspectratio", description: "preserve the aspect ratio in the output", default: true),
+	Option("width", default: 1024, description: "output pixel width"),
+	Option("height", default: 1024, description: "output pixel height"),
+	Option("page", default: 1, description: "page to render"),
+	Flag("preserveaspectratio", default: true, description: "preserve the aspect ratio in the output"),
 	Argument<String>("pdfin", description: "The PDF input file"),
 	Argument<String>("pngout", description: "The PNG output file")
 ) { (width, height, pageno, preserveaspectratio, pdfin, pngout) throws  in
